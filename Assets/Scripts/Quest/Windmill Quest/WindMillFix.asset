@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851bddfc8f05aaf4f8170b227caa8c08, type: 3}
+  m_Name: Buy Iron Ore
+  m_EditorClassIdentifier: Assembly-CSharp::QuestData
+  questName: Wind Mill Repair
+  steps:
+  - hint: Find Martha
+    objectiveType: 0
+    requiredItem: {fileID: 0}
+    npcName: {fileID: 11400000, guid: 1b2821ab6ec91e74793204e47c4627fc, type: 2}
+  - hint: Collect Iron Ore from Tyler
+    objectiveType: 1
+    requiredItem: {fileID: 11400000, guid: ede5eaf425bf38642b87f983bc5c95f4, type: 2}
+    npcName: {fileID: 11400000, guid: 85dd5728d48e4ff4fbe89ee3d17d0939, type: 2}
+  - hint: Forge Gear
+    objectiveType: 3
+    requiredItem: {fileID: 11400000, guid: ede5eaf425bf38642b87f983bc5c95f4, type: 2}
+    npcName: {fileID: 0}
+  - hint: Repair Windmill
+    objectiveType: 4
+    requiredItem: {fileID: 11400000, guid: ce8d096b7af3d5b428c1e495ba74f230, type: 2}
+    npcName: {fileID: 0}
