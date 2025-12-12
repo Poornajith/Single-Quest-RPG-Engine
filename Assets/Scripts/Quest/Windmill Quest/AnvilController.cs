@@ -43,6 +43,8 @@ public class AnvilController : MonoBehaviour, IInteractable
     {
         Debug.Log("Starting Forge Process...");
 
+        SwitchHammer();
+
         playerAnimator.SetBool("IsForging", true);
         playerController.enabled = false;
         playerThirdPersonController.enabled = false;
@@ -65,5 +67,10 @@ public class AnvilController : MonoBehaviour, IInteractable
         forgeParticles.Stop();
 
         QuestController.Instance.CompleteStep();
+    }
+
+    private void SwitchHammer() 
+    {         
+        WeaponEquipController.instance.EquipWeapon();
     }
 }
