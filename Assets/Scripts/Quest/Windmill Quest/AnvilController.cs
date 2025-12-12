@@ -67,6 +67,7 @@ public class AnvilController : MonoBehaviour, IInteractable
         forgeParticles.Stop();
 
         QuestController.Instance.CompleteStep();
+        PlayerHUDController.Instance.HideInteractHint();
     }
 
     private void SwitchHammer() 
