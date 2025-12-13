@@ -62,13 +62,14 @@ public class NPCController : MonoBehaviour
             if (currentState == NPCState.InDialogue)
             {
                 DialougeManager.instance.EndDialouge();
+                PlayerHUDController.Instance.HideDialogueHUD(); 
                 currentState = NPCState.Idle;
             }
             animator.SetBool(inDialougeAnimation, false);
 
             DialougeManager.OnDialogueEnd -= OnDialogueFinished;
         }
-        // PlayerHUDController.Instance.HideDialogueHUD(); // This is now handled by DialougeManager.OnDialogueEnd
+        
     }
     private void OnTriggerStay(Collider other)
     {

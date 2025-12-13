@@ -9,11 +9,15 @@ public class AnvilController : MonoBehaviour, IInteractable
 {
     public static AnvilController Instance;
 
-    [SerializeField] private string anvilUseAnimationTrigger = "Forge";
+    [Header("Anvil Settings")]
     [SerializeField] private CinemachineVirtualCamera anvilCamera;
     [SerializeField] private float forgingDuration = 3f;
     [SerializeField] private GameObject player;
     [SerializeField] private Transform playerForgingTransform;
+
+    [Header("Related Quest Data")]
+    [SerializeField] private QuestStep relatedQuestStep;
+    [SerializeField] private QuestData relatedQuest;
 
     [Header("Audio and Effects")]
     [SerializeField] private AudioSource anvilAudioSource;
@@ -21,12 +25,11 @@ public class AnvilController : MonoBehaviour, IInteractable
 
     [Header("Crafting Data")]
     [SerializeField] private ItemData CraftingRequiredItem;
+    [SerializeField] private string CraftingAnimName = "IsForging";
 
     private CharacterController playerController;
     private ThirdPersonController playerThirdPersonController;
     private Animator playerAnimator;
-
-    [SerializeField] private string QuestHint = "Buy a new hammer from the blacksmith to start forging.";
 
     private void Awake()
     {
@@ -43,9 +46,9 @@ public class AnvilController : MonoBehaviour, IInteractable
     {
         Debug.Log("Starting Forge Process...");
 
-        SwitchHammer();
+        WeaponEquipController.instance.EquipWeapon();
 
-        playerAnimator.SetBool("IsForging", true);
+        playerAnimator.SetBool(CraftingAnimName, true);
         playerController.enabled = false;
         playerThirdPersonController.enabled = false;
         player.transform.position = playerForgingTransform.position;
@@ -59,19 +62,24 @@ public class AnvilController : MonoBehaviour, IInteractable
 
     private void EndForging()
     {
-        playerAnimator.SetBool("IsForging", false);
+        playerAnimator.SetBool(CraftingAnimName, false);
         playerController.enabled = true;
         playerThirdPersonController.enabled = true;
         anvilCamera.Priority = 0;
         anvilAudioSource.Stop();
-        forgeParticles.Stop();
+        forgeParticles.Stop(); 
+        WeaponEquipController.instance.UnEquipWeapon();
 
-        QuestController.Instance.CompleteStep();
+        if (QuestController.Instance.GetCurrentQuest() == relatedQuest
+            && QuestController.Instance.GetCurrentStep().objectiveType == relatedQuestStep.objectiveType)
+        {
+            QuestController.Instance.CompleteStep();
+        }
+        else
+        {
+            InventoryController.Instance.AddItem(CraftingRequiredItem, 1);
+            Debug.Log($"Crafted {CraftingRequiredItem.itemName} and added to inventory.");
+        }
         PlayerHUDController.Instance.HideInteractHint();
-    }
-
-    private void SwitchHammer() 
-    {         
-        WeaponEquipController.instance.EquipWeapon();
     }
 }
