@@ -3803,7 +3803,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9059131388384374599}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9994241, z: -0, w: 0.033933707}
+  m_LocalRotation: {x: 0, y: 0.9994242, z: 0, w: 0.03393159}
   m_LocalPosition: {x: -3.31, y: 0, z: 0.49703026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3867,9 +3867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81733aff0eaa154e9ead56fbc8a069c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCController
-  onQuestTriggered:
-    m_PersistentCalls:
-      m_Calls: []
+  npcName: {fileID: 11400000, guid: 85dd5728d48e4ff4fbe89ee3d17d0939, type: 2}
   greetAnimation: Wave
   inDialougeAnimation: IsTalking
   dialogueText:

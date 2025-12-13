@@ -4,6 +4,10 @@ public class WindMillController : MonoBehaviour, IInteractable
 {
     [SerializeField] private string windmillFixAnimationTrigger = "Fix";
 
+    [Header("Related Quest Data")]
+    [SerializeField] private QuestStep relatedQuestStep;
+    [SerializeField] private QuestData relatedQuest;
+
     private Animator windmillAnimator;
     private void Start()
     {
@@ -11,7 +15,11 @@ public class WindMillController : MonoBehaviour, IInteractable
     }
     public void Interact()
     {
-       windmillAnimator.SetTrigger(windmillFixAnimationTrigger);
-       QuestController.Instance.CompleteStep();
+        windmillAnimator.SetTrigger(windmillFixAnimationTrigger);
+        if (QuestController.Instance.GetCurrentQuest() == relatedQuest
+            && QuestController.Instance.GetCurrentStep().objectiveType == relatedQuestStep.objectiveType)
+        {
+            QuestController.Instance.CompleteStep();
+        }
     }
 }
