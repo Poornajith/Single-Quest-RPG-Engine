@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class AnvilController : MonoBehaviour, IInteractable
+public class AnvilController : BaseInteractableController
 {
     public static AnvilController Instance;
 
@@ -14,10 +14,6 @@ public class AnvilController : MonoBehaviour, IInteractable
     [SerializeField] private float forgingDuration = 3f;
     [SerializeField] private GameObject player;
     [SerializeField] private Transform playerForgingTransform;
-
-    [Header("Related Quest Data")]
-    [SerializeField] private QuestStep relatedQuestStep;
-    [SerializeField] private QuestData relatedQuest;
 
     [Header("Audio and Effects")]
     [SerializeField] private AudioSource anvilAudioSource;
@@ -42,7 +38,9 @@ public class AnvilController : MonoBehaviour, IInteractable
         playerThirdPersonController = player.GetComponent<ThirdPersonController>();
         forgeParticles.Stop();
     }
-    public void Interact()
+
+    // Implement the abstract method to define the specific behavior for the anvil.
+    protected override void HandleInteractionLogic()
     {
         Debug.Log("Starting Forge Process...");
 
@@ -57,18 +55,22 @@ public class AnvilController : MonoBehaviour, IInteractable
         anvilAudioSource.Play();
         forgeParticles.Play();
 
-        Invoke(nameof(EndForging), forgingDuration);
+        StartCoroutine(ForgingRoutine());
     }
 
-    private void EndForging()
+    private IEnumerator ForgingRoutine()
     {
+        yield return new WaitForSeconds(forgingDuration);
+
+        // **Forge process END**
         playerAnimator.SetBool(CraftingAnimName, false);
         playerController.enabled = true;
         playerThirdPersonController.enabled = true;
         anvilCamera.Priority = 0;
         anvilAudioSource.Stop();
-        forgeParticles.Stop(); 
+        forgeParticles.Stop();
         WeaponEquipController.instance.UnEquipWeapon();
+        PlayerHUDController.Instance.HideInteractHint();
 
         if (QuestController.Instance.GetCurrentQuest() == relatedQuest
             && QuestController.Instance.GetCurrentStep().objectiveType == relatedQuestStep.objectiveType)
@@ -80,6 +82,5 @@ public class AnvilController : MonoBehaviour, IInteractable
             InventoryController.Instance.AddItem(CraftingRequiredItem, 1);
             Debug.Log($"Crafted {CraftingRequiredItem.itemName} and added to inventory.");
         }
-        PlayerHUDController.Instance.HideInteractHint();
     }
 }
