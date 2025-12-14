@@ -1,25 +1,19 @@
 using UnityEngine;
 
-public class WindMillController : MonoBehaviour, IInteractable
+public class WindMillController : BaseInteractableController
 {
     [SerializeField] private string windmillFixAnimationTrigger = "Fix";
-
-    [Header("Related Quest Data")]
-    [SerializeField] private QuestStep relatedQuestStep;
-    [SerializeField] private QuestData relatedQuest;
 
     private Animator windmillAnimator;
     private void Start()
     {
         windmillAnimator = GetComponent<Animator>();
     }
-    public void Interact()
+    // Implement the abstract method to define the specific behavior for the windmill.
+    protected override void HandleInteractionLogic()
     {
         windmillAnimator.SetTrigger(windmillFixAnimationTrigger);
-        if (QuestController.Instance.GetCurrentQuest() == relatedQuest
-            && QuestController.Instance.GetCurrentStep().objectiveType == relatedQuestStep.objectiveType)
-        {
-            QuestController.Instance.CompleteStep();
-        }
     }
+    // The Interact() method is inherited from BaseInteractableController
+    // which calls HandleInteractionLogic() and then CheckForQuestCompletion().
 }
